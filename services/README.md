@@ -48,7 +48,7 @@ If you want to test on a physical device, you have two options:
 // In services/api.js, temporarily change:
 const getBaseURL = () => {
   if (__DEV__ === false) {
-    return 'https://api.safetravels.app';
+    return 'https://api.galois.app';
   }
   
   // Replace with your computer's IP address
@@ -79,7 +79,7 @@ Checks if the backend server is running and accessible.
   success: true,
   data: {
     status: 'healthy',
-    message: 'SafeTravels API is running',
+    message: 'Galois API is running',
     timestamp: '2025-01-27T...',
     uptime: 123.45,
     environment: 'development'
@@ -188,7 +188,7 @@ For production, update the `getBaseURL()` function:
 ```javascript
 const getBaseURL = () => {
   if (__DEV__ === false) {
-    return 'https://api.safetravels.app'; // Your production URL
+    return 'https://api.galois.app'; // Your production URL
   }
   // ... development URLs
 };

@@ -20,7 +20,7 @@ import { Platform, Alert } from 'react-native';
 
 // Available icon aliases (must match icon names in native projects)
 const AVAILABLE_ICONS = {
-  default: 'default', // SafeTravels icon
+  default: 'default', // Galois icon
   calculator: 'calculator',
   notes: 'notes',
   weather: 'weather',

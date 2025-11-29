@@ -39,7 +39,7 @@ export default function App() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5' }}>
         <ActivityIndicator size="large" color="#007AFF" />
-        <Text style={{ marginTop: 10, fontSize: 16, color: '#666' }}>Loading SafeTravels...</Text>
+        <Text style={{ marginTop: 10, fontSize: 16, color: '#666' }}>Loading Galois...</Text>
       </View>
     );
   }
@@ -73,7 +73,7 @@ export default function App() {
           }}
         />
 
-        {/* Main App - Real SafeTravels (after stealth PIN) */}
+        {/* Main App - Real Galois (after stealth PIN) */}
         <Stack.Screen
           name="MainApp"
           component={MainApp}

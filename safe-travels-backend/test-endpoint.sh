@@ -5,7 +5,7 @@
 
 BASE_URL="http://localhost:3000"
 
-echo "🧪 Testing SafeTravels API Endpoints"
+echo "🧪 Testing Galois API Endpoints"
 echo "===================================="
 echo ""
 

@@ -567,3 +567,4 @@ Alert.alert(
 ---
 
 **Remember:** Alert dialogs are perfect for confirmations and important messages. For custom designs or complex interactions, use the `Modal` component instead! 🎯
+

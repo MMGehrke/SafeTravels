@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# Quick Start Script for SafeTravels Testing
+# Quick Start Script for Galois Testing
 # This script helps you start both backend and frontend for testing
 
-echo "🚀 SafeTravels Testing Setup"
+echo "🚀 Galois Testing Setup"
 echo "============================"
 echo ""
 
 # Check if we're in the right directory
 if [ ! -f "package.json" ] || [ ! -d "safe-travels-backend" ]; then
-  echo "❌ Error: Please run this script from the SafeTravels root directory"
+  echo "❌ Error: Please run this script from the Galois root directory"
   exit 1
 fi
 

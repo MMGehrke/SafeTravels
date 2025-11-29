@@ -89,9 +89,9 @@ const CamouflageSettings = ({ navigation }) => {
   const iconOptions = [
     {
       name: 'default',
-      label: 'SafeTravels',
+      label: 'Galois',
       icon: '🌈',
-      description: 'Default SafeTravels icon',
+      description: 'Default Galois icon',
     },
     {
       name: 'calculator',

@@ -6,7 +6,7 @@
  * an attacker while the real data has already been wiped.
  * 
  * SECURITY:
- * - No connection to real SafeTravels data
+ * - No connection to real Galois data
  * - Hardcoded generic content only
  * - No user accounts or sensitive information
  * - Appears as a legitimate travel information app

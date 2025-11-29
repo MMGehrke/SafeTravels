@@ -1,5 +1,5 @@
 /**
- * SafeTravels API Service
+ * Galois API Service
  * 
  * Handles all API communication between the React Native app and the backend server.
  * Includes proper localhost handling for different platforms.
@@ -24,7 +24,7 @@ import { Platform } from 'react-native';
 const getBaseURL = () => {
   // For production, use your actual API URL
   if (__DEV__ === false) {
-    return 'https://api.safetravels.app'; // Replace with your production URL
+    return 'https://api.galois.app'; // Replace with your production URL
   }
 
   // Development mode - handle localhost based on platform

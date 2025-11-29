@@ -2,7 +2,7 @@
 
 ## 🎯 Feature Overview
 
-This implementation provides a "Plausible Deniability" architecture that disguises the SafeTravels app as a functional Calculator. The real app is only accessible after entering a secret PIN sequence.
+This implementation provides a "Plausible Deniability" architecture that disguises the Galois app as a functional Calculator. The real app is only accessible after entering a secret PIN sequence.
 
 ---
 
@@ -73,7 +73,7 @@ This implementation provides a "Plausible Deniability" architecture that disguis
 - ✅ Ready for native module integration
 
 **Available Icons:**
-- Default (SafeTravels)
+- Default (Galois)
 - Calculator
 - Notes
 - Weather

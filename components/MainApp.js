@@ -1,7 +1,7 @@
 /**
- * MainApp Component - Real SafeTravels Application
+ * MainApp Component - Real Galois Application
  * 
- * This is the actual SafeTravels app that appears after the stealth PIN is entered.
+ * This is the actual Galois app that appears after the stealth PIN is entered.
  * It contains all the real functionality: Login, Home, Map screens.
  * 
  * SECURITY: This component is only accessible after entering the STEALTH_PIN

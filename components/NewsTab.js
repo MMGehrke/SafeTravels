@@ -201,7 +201,7 @@ const NewsTab = ({ country }) => {
       id: 1,
       title: 'No Recent News Available',
       snippet: 'News information for this country is currently unavailable.',
-      source: 'SafeTravels',
+      source: 'Galois',
       date: 'N/A'
     }
   ];

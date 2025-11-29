@@ -1,6 +1,6 @@
-# SafeTravels Backend API
+# Galois Backend API
 
-A secure, production-ready Express.js backend server for the SafeTravels mobile application.
+A secure, production-ready Express.js backend server for the Galois mobile application.
 
 ## 🏗️ Architecture Overview
 
@@ -225,7 +225,7 @@ app.use(cors({
 **⚠️ Security Note**: Using `'*'` allows ALL origins. In production, specify exact origins:
 
 ```javascript
-origin: ['https://safetravels.app', 'https://www.safetravels.app']
+origin: ['https://galois.app', 'https://www.galois.app']
 ```
 
 ## ✅ Input Validation with express-validator
@@ -270,7 +270,7 @@ Health check endpoint for monitoring and load balancers.
 ```json
 {
   "status": "healthy",
-  "message": "SafeTravels API is running",
+  "message": "Galois API is running",
   "timestamp": "2025-01-27T10:30:00.000Z",
   "uptime": 123.45,
   "environment": "development"
@@ -283,7 +283,7 @@ Root endpoint with API information.
 **Response:**
 ```json
 {
-  "message": "Welcome to SafeTravels API",
+  "message": "Welcome to Galois API",
   "version": "1.0.0",
   "endpoints": {
     "health": "/health",
@@ -378,7 +378,7 @@ nodemon server.js
 1. **Check the console output:**
    ```
    ╔════════════════════════════════════════╗
-   ║   SafeTravels Backend Server          ║
+   ║   Galois Backend Server             ║
    ║   🚀 Server running on port 3000      ║
    ║   🌍 Environment: development         ║
    ║   📍 Health check: http://localhost:3000/health ║

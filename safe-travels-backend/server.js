@@ -1,7 +1,7 @@
 /**
- * SafeTravels Backend Server
+ * Galois Backend Server
  * 
- * A secure Express.js server for the SafeTravels mobile application.
+ * A secure Express.js server for the Galois mobile application.
  * Provides API endpoints for country safety data and news.
  */
 
@@ -429,7 +429,7 @@ app.get('/health', (req, res) => {
  */
 app.get('/', (req, res) => {
   res.json({
-    message: 'Welcome to SafeTravels API',
+    message: 'Welcome to Galois API',
     version: '1.0.0',
     endpoints: {
       health: '/health',
@@ -984,7 +984,7 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`
 ╔════════════════════════════════════════╗
-║   SafeTravels Backend Server          ║
+║   Galois Backend Server             ║
 ║   🚀 Server running on port ${PORT}      ║
 ║   🌍 Environment: ${process.env.NODE_ENV || 'development'}          ║
 ║   📍 Health check: http://localhost:${PORT}/health ║

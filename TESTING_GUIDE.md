@@ -1,6 +1,6 @@
-# SafeTravels Testing Guide
+# Galois Testing Guide
 
-Complete guide to testing all features of the SafeTravels application.
+Complete guide to testing all features of the Galois application.
 
 ---
 

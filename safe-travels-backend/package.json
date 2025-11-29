@@ -1,7 +1,7 @@
 {
   "name": "safe-travels-backend",
   "version": "1.0.0",
-  "description": "Secure backend API for SafeTravels mobile application",
+  "description": "Secure backend API for Galois mobile application",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -11,7 +11,7 @@
   "keywords": [
     "express",
     "api",
-    "safetravels",
+    "galois",
     "lgbtqia"
   ],
   "author": "",

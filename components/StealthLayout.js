@@ -1,7 +1,7 @@
 /**
  * StealthLayout Component - "Plausible Deniability" Calculator
  * 
- * This component disguises the SafeTravels app as a functional iOS Calculator.
+ * This component disguises the Galois app as a functional iOS Calculator.
  * It appears as a legitimate calculator app to pass cursory inspection.
  * 
  * SECURITY FEATURES:
@@ -175,7 +175,7 @@ const StealthLayout = () => {
     if (sequence.endsWith(STEALTH_PIN)) {
       // SECURITY: Never log PIN detection in production
       if (__DEV__) {
-        console.log('🔓 Stealth PIN detected - Unlocking SafeTravels');
+        console.log('🔓 Stealth PIN detected - Unlocking Galois');
       }
       inputSequence.current = ''; // Clear sequence
       
