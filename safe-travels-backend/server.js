@@ -138,6 +138,57 @@ function anonymizeIP(ip) {
   return `hashed_${hash}`;
 }
 
+/**
+ * Sanitize Error Messages
+ * 
+ * Prevents information disclosure by sanitizing error messages before sending to clients.
+ * Internal error details are logged server-side only.
+ * 
+ * @param {Error} error - The error object
+ * @param {number} statusCode - HTTP status code
+ * @returns {string} - Safe, user-friendly error message
+ * 
+ * @example
+ * sanitizeErrorMessage(new Error('ENOENT: file not found'), 500)
+ * // Returns: 'An internal error occurred. Please try again later.'
+ */
+function sanitizeErrorMessage(error, statusCode = 500) {
+  if (!error || !error.message) {
+    return 'An error occurred. Please try again.';
+  }
+
+  const message = error.message;
+
+  // Client errors (400-499) are usually safe to show (already validated)
+  if (statusCode >= 400 && statusCode < 500) {
+    return message;
+  }
+
+  // Server errors (500+) should be sanitized
+  // Don't expose file paths
+  if (message.includes('/') || message.includes('\\')) {
+    return 'A file system error occurred. Please contact support.';
+  }
+
+  // Don't expose database connection errors
+  if (message.includes('ECONNREFUSED') || message.includes('ENOTFOUND') || message.includes('ETIMEDOUT')) {
+    return 'Service temporarily unavailable. Please try again later.';
+  }
+
+  // Don't expose internal module errors
+  if (message.includes('Cannot find module') || message.includes('require(') || message.includes('Module not found')) {
+    return 'A configuration error occurred. Please contact support.';
+  }
+
+  // Don't expose permission errors
+  if (message.includes('EACCES') || message.includes('EPERM')) {
+    return 'A permission error occurred. Please contact support.';
+  }
+
+  // Generic fallback for server errors
+  return 'An internal error occurred. Please try again later. If the problem persists, contact support.';
+}
+
 // ============================================
 // CUSTOM MIDDLEWARE
 // ============================================
@@ -617,7 +668,7 @@ app.post(
       console.error('Error calculating path risk:', error);
       res.status(500).json({
         error: 'Internal Server Error',
-        message: error.message || 'Failed to calculate path risk'
+        message: sanitizeErrorMessage(error, 500)
       });
     }
   }
@@ -715,13 +766,9 @@ app.use((err, req, res, next) => {
   
   // Determine safe error message
   const statusCode = err.status || 500;
-  const isClientError = statusCode >= 400 && statusCode < 500;
   
-  // Client errors (400-499) can show specific messages
-  // Server errors (500+) should be generic to avoid information disclosure
-  const safeMessage = isClientError 
-    ? err.message 
-    : 'An error occurred. Please try again later. If the problem persists, contact support with error ID.';
+  // Use sanitization function to prevent information disclosure
+  const safeMessage = sanitizeErrorMessage(err, statusCode);
   
   // Build response - NEVER include stack traces
   const response = {

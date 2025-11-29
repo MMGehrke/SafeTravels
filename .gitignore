@@ -102,4 +102,10 @@ dist
 
 # Temporary folders
 tmp/
-temp/ 
+temp/
+
+# Security audit reports (internal documentation)
+SECURITY_AUDIT*.md
+SECURITY_REVIEW.md
+SECURITY_FIXES_SUMMARY.md
+REMAINING_VULNERABILITIES_FIXED.md 
