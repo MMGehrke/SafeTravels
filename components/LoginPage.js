@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { checkServerHealth, API_BASE_URL } from '../services/api';
 
 const { width, height } = Dimensions.get('window');
 
@@ -17,6 +18,40 @@ const LoginPage = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [serverStatus, setServerStatus] = useState({
+    checking: true,
+    connected: false,
+    message: 'Checking server connection...',
+  });
+
+  // Check server health on component mount
+  useEffect(() => {
+    const checkHealth = async () => {
+      setServerStatus({
+        checking: true,
+        connected: false,
+        message: 'Checking server connection...',
+      });
+
+      const result = await checkServerHealth();
+
+      if (result.success) {
+        setServerStatus({
+          checking: false,
+          connected: true,
+          message: `Server connected (${result.data.environment || 'unknown'})`,
+        });
+      } else {
+        setServerStatus({
+          checking: false,
+          connected: false,
+          message: `Server offline: ${result.error}`,
+        });
+      }
+    };
+
+    checkHealth();
+  }, []);
 
   const handleLogin = async () => {
     if (!username.trim() || !password.trim()) {
@@ -81,6 +116,36 @@ const LoginPage = ({ navigation }) => {
             <Text style={styles.loginButtonText}>Login</Text>
           )}
         </TouchableOpacity>
+      </View>
+
+      {/* Server Status Indicator */}
+      <View style={styles.serverStatusContainer}>
+        <View
+          style={[
+            styles.serverStatusIndicator,
+            serverStatus.connected
+              ? styles.serverStatusConnected
+              : styles.serverStatusDisconnected,
+          ]}
+        />
+        <View style={styles.serverStatusTextContainer}>
+          {serverStatus.checking && (
+            <ActivityIndicator size="small" color="#666" style={{ marginRight: 5 }} />
+          )}
+          <Text
+            style={[
+              styles.serverStatusText,
+              serverStatus.connected
+                ? styles.serverStatusTextConnected
+                : styles.serverStatusTextDisconnected,
+            ]}
+          >
+            {serverStatus.message}
+          </Text>
+        </View>
+        {__DEV__ && (
+          <Text style={styles.serverStatusUrl}>{API_BASE_URL}</Text>
+        )}
       </View>
     </View>
   );
@@ -153,6 +218,44 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
+  },
+  serverStatusContainer: {
+    marginTop: 30,
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  serverStatusIndicator: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    marginBottom: 8,
+  },
+  serverStatusConnected: {
+    backgroundColor: '#4CAF50',
+  },
+  serverStatusDisconnected: {
+    backgroundColor: '#F44336',
+  },
+  serverStatusTextContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  serverStatusText: {
+    fontSize: 12,
+    textAlign: 'center',
+  },
+  serverStatusTextConnected: {
+    color: '#4CAF50',
+  },
+  serverStatusTextDisconnected: {
+    color: '#F44336',
+  },
+  serverStatusUrl: {
+    fontSize: 10,
+    color: '#999',
+    marginTop: 4,
+    fontFamily: 'monospace',
   },
 });
 

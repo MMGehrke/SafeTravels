@@ -7,6 +7,7 @@ import { View, Text, ActivityIndicator } from 'react-native';
 
 import LoginPage from './components/LoginPage';
 import HomePage from './components/HomePage';
+import MapScreen from './components/MapScreen';
 
 const Stack = createStackNavigator();
 
@@ -52,6 +53,21 @@ export default function App() {
       >
         <Stack.Screen name="Login" component={LoginPage} />
         <Stack.Screen name="Home" component={HomePage} />
+        <Stack.Screen 
+          name="Map" 
+          component={MapScreen}
+          options={{
+            headerShown: true,
+            title: 'Safe Pathfinding',
+            headerStyle: {
+              backgroundColor: '#007AFF',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

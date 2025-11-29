@@ -10,6 +10,7 @@ import {
   FlatList,
   Modal,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import Animated, {
@@ -20,6 +21,8 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import CountryModal from './CountryModal';
+import { clearAllTokens } from '../utils/secureStorage';
+import { emergencyLogout } from '../services/api';
 
 const { width, height } = Dimensions.get('window');
 
@@ -35,7 +38,7 @@ const mockCountries = [
   { id: 8, name: 'South Africa', x: 0.5, y: 0.8, color: '#FF9800' },
 ];
 
-const HomePage = () => {
+const HomePage = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
@@ -109,6 +112,81 @@ const HomePage = () => {
     setSelectedCountry(null);
   };
 
+  /**
+   * Emergency Wipe Function
+   * 
+   * This function performs a complete security wipe:
+   * 1. Deletes all data from SecureStore
+   * 2. Resets navigation to Login screen
+   * 3. Sends logout request to backend (fire and forget)
+   * 
+   * This is a security feature for users who need to quickly
+   * clear all sensitive data from their device.
+   */
+  const emergencyWipe = async () => {
+    try {
+      // Step 1: Clear all secure storage
+      await clearAllTokens();
+      console.log('✅ All secure data cleared');
+
+      // Step 2: Send logout request to backend (fire and forget)
+      // We don't wait for this - it's fire and forget
+      emergencyLogout().catch(error => {
+        // Silently handle errors - this is fire and forget
+        console.log('Logout request sent (fire and forget)');
+      });
+
+      // Step 3: Reset navigation to Login screen
+      // This clears the navigation stack and goes back to login
+      if (navigation) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Login' }],
+        });
+      }
+    } catch (error) {
+      console.error('Error during emergency wipe:', error);
+      // Even if there's an error, try to navigate to login
+      if (navigation) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Login' }],
+        });
+      }
+    }
+  };
+
+  /**
+   * Handle Panic Button Press
+   * 
+   * Shows an Alert dialog to confirm the emergency wipe action
+   * before executing it. This prevents accidental data loss.
+   */
+  const handlePanicButtonPress = () => {
+    Alert.alert(
+      'Emergency Wipe',
+      'This will delete all stored data and log you out. This action cannot be undone.\n\nAre you sure you want to continue?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel', // iOS: shows in red, Android: shows as cancel
+          onPress: () => {
+            // User cancelled - do nothing
+            console.log('Emergency wipe cancelled');
+          },
+        },
+        {
+          text: 'Wipe All Data',
+          style: 'destructive', // iOS: shows in red, Android: shows as destructive
+          onPress: emergencyWipe, // Execute emergency wipe
+        },
+      ],
+      {
+        cancelable: true, // Allow dismissing by tapping outside (Android)
+      }
+    );
+  };
+
   return (
     <View style={styles.container}>
       {/* Interactive Globe Background */}
@@ -169,6 +247,28 @@ const HomePage = () => {
           </View>
         )}
       </View>
+
+      {/* Map Navigation Button */}
+      {navigation && (
+        <TouchableOpacity
+          style={styles.mapButton}
+          onPress={() => navigation.navigate('Map')}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.mapButtonText}>🗺️ Safe Pathfinding</Text>
+        </TouchableOpacity>
+      )}
+
+      {/* Emergency Wipe / Panic Button (FAB) */}
+      {navigation && (
+        <TouchableOpacity
+          style={styles.panicButton}
+          onPress={handlePanicButtonPress}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.panicButtonIcon}>🗑️</Text>
+        </TouchableOpacity>
+      )}
 
       {/* Loading Overlay */}
       {isLoading && (
@@ -300,6 +400,53 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     marginTop: 10,
+  },
+  mapButton: {
+    position: 'absolute',
+    bottom: 30,
+    right: 20,
+    backgroundColor: '#007AFF',
+    borderRadius: 25,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+    zIndex: 10,
+  },
+  mapButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  panicButton: {
+    position: 'absolute',
+    bottom: 30,
+    left: 20,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#F44336', // Red color for emergency
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8, // Android shadow
+    zIndex: 10,
+  },
+  panicButtonIcon: {
+    fontSize: 24,
+    color: '#fff',
   },
 });
 
